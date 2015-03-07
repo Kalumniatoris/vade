@@ -13,6 +13,8 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+import elemental.html.Console;
+
 /**
  *
  */
@@ -30,7 +32,10 @@ public class MyUI extends UI {
         button.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(ClickEvent event) {
-                layout.addComponent(new Label("Thank you for clicking"));
+                layout.addComponent(new Label("Thank you for clicking 123"));
+                Button button2 = new Button("Click Me Too");
+                layout.addComponent(button2);
+                System.out.println("Test");
             }
         });
         layout.addComponent(button);
