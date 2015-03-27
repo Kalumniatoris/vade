@@ -1,7 +1,9 @@
 package ka2.pr;
 
+import java.io.Serializable;
 
-public class Cantr{
+
+public class Cantr implements Serializable{
 	public final int maxx=10;
 	public final int maxy=10;
 	private int[][] r = new int[maxx][maxy];
@@ -13,7 +15,9 @@ public class Cantr{
 	}
 	
 	public void setR(int x, int y, int n) {
+		if(n>=0&&n<256)
 		this.r[x][y] = n;
+	
 	}
 	
 	public int getG(int x,int y) {
@@ -21,6 +25,7 @@ public class Cantr{
 	}
 	
 	public void setG(int x, int y, int n) {
+		if(n>=0&&n<256)
 		this.g[x][y] = n;
 	}
 	
@@ -29,6 +34,7 @@ public class Cantr{
 	}
 	
 	public void setB(int x, int y, int n) {
+		if(n>=0&&n<256)
 		this.b[x][y] = n;
 	}
 	
@@ -42,6 +48,13 @@ public class Cantr{
 			}
 			System.out.println("");
 		}
+		
+	}
+	
+	public void printCurrent(int x, int y){
+		System.out.println("R:"+getR(x, y));
+		System.out.println("G:"+getG(x, y));
+		System.out.println("B:"+getB(x, y));
 		
 	}
 	/**

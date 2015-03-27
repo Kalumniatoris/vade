@@ -146,7 +146,7 @@ public class MyUI extends UI {
     			}
     		});
     		addComponent(btnBack);
-    		cantr.setG(3, 5, 80);
+    		cantr.setG(3, 5, 255);
     		cantr.setB(8, 4, 120);
     		System.out.println(cantr.getG(3, 5)+"%%"+cantr.getB(8, 4));
     		addComponent(can);
@@ -221,6 +221,7 @@ public class MyUI extends UI {
 	 int h=c.maxy ;
 	 int w=c.maxx;
 	 String r,g,b;
+	 String rr,gg,bb;
 	 String rgb="";
 	 double canh=can.getHeight();
 	 double canw=can.getWidth();
@@ -232,27 +233,34 @@ public class MyUI extends UI {
 		for(int j=0;j<w;j+=1){		 
 			 //can.setStrokeStyle(c.getR(i, j), c.getG(i, j), c.getB(i, j));
 			
-		  r = Integer.toHexString(c.getR(i, j));		
+		  r = Integer.toHexString(c.getR(i, j));
+		  //System.out.println("r:"+r);
 		  if (r.length() < 2) {			  
 			   r="0"+r.toString();
 			}
+		  //System.out.println("rr:"+r);
+		  
 		  g = Integer.toHexString(c.getG(i, j));
-		 
-		  if (g.length() < 2) {
-			  
+		 //System.out.println("g:"+g);
+		  if (g.length() < 2) {			  
 			   g="0"+g.toString();
 			}
+		  //System.out.println("gg:"+g);
+		  
 		  b = Integer.toHexString(c.getB(i, j));
-		
-		  if (b.length() < 2) {
-			 
-			   b="0"+r.toString();
+		  //System.out.println("b:"+b);
+		  if (b.length() < 2) {			 
+			   b="0"+b.toString();
 			}
-		 
+		  //System.out.println("bb:"+b);		  
 		  rgb=r+g+b;
-		  can.setFillStyle(rgb.substring(0,rgb.length()));
-		  System.out.println(rgb);
-		 if((j+i)%3==2) can.setFillStyle("01f0f0");
+		  //System.out.println("rgb:"+rgb);
+		  
+		  //while(rgb.length()>6){rgb=rgb.substring(1,rgb.length());}
+		  //System.out.println("rgbq:"+rgb);
+		  can.setFillStyle(rgb);
+		  //System.out.println(i+","+j+":"+rgb);
+		
 		  can.fillRect(qh*i, qw*j, qh, qw);
 		  can.strokeRect(qh*i, qw*j, qh, qw);
 		  
@@ -272,8 +280,11 @@ public class MyUI extends UI {
 		 
 	  double qh = canh/h;
 	  double qw = canw/w;
+	  int xa = (int)(x/qw);
+	  int ya = (int)(y/qh);
+	 c.printCurrent(xa, ya);
 	  
-	  c.setB((int)(x/qw),(int)(y/qh), 30);
+	  c.setR(xa,ya, c.getR(xa,ya)+5);
 	  System.out.println((int)(x/qw)+"|"+(int)(y/qh));
 	  dfC(c,can);
 	  
