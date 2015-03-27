@@ -77,6 +77,22 @@
 			<artifactId>vaadin-themes</artifactId>
 			<version>${vaadin.version}</version>
 		</dependency>
+		<!-- Ddd -->
+		<dependency>
+   			<groupId>org.vaadin.addons</groupId>
+   			<artifactId>canvas-plus</artifactId>
+   			<version>1.3.3</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-client-compiler</artifactId>
+			<version>${vaadin.version}</version>
+			<scope>provided</scope>
+		</dependency>
+				
+		
+		
 	</dependencies>
 
 	<build>
@@ -159,7 +175,8 @@
 			<!-- The Jetty plugin allows us to easily test the development build by
 				running jetty:run on the command line. -->
 			<plugin>
-				<groupId>org.eclipse.jetty</groupId>
+				<!-- <groupId>org.eclipse.jetty</groupId> -->
+				<!-- <groupId>org.mortbay.jetty</groupId>-->
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>${jetty.plugin.version}</version>
 				<configuration>

@@ -1,7 +1,19 @@
 package ka2.pr;
 
-public class Account {
-	private String login, password, email;
+import java.io.Serializable;
+
+import javax.validation.constraints.NotNull;
+
+public class Account implements Serializable{
+	@NotNull
+	@javax.validation.constraints.Size(min=3,max=32)
+	String login;
+	
+	@NotNull
+	@javax.validation.constraints.Size(min=6)
+	String password;
+	
+	String email;
 
 	public Account(String login, String password, String email) {
 		this.login = login;

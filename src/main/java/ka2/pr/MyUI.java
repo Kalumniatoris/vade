@@ -1,36 +1,49 @@
 package ka2.pr;
 
+import java.awt.Color;
+import java.util.Random;
+
 import javax.servlet.annotation.WebServlet;
 
-import com.google.gwt.aria.client.MainRole;
-import com.google.web.bindery.requestfactory.apt.RfValidator;
+import com.alsnightsoft.vaadin.widgets.canvasplus.CanvasPlus;
+import com.alsnightsoft.vaadin.widgets.canvasplus.CanvasPlus.CanvasClickDownListener;
+import com.alsnightsoft.vaadin.widgets.canvasplus.CanvasPlus.CanvasClickUpListener;
+import com.alsnightsoft.vaadin.widgets.canvasplus.CanvasPlus.CanvasMouseMoveListener;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
-import com.vaadin.data.Validator;
-import com.vaadin.data.Validator.InvalidValueException;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.shared.MouseEventDetails;
+import com.vaadin.shared.MouseEventDetails.MouseButton;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Form;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.PasswordField;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
 
-import elemental.html.Console;
+
+
+
+
+
+
+
+
+
+/*
+import org.vaadin.hezamu.canvas.Canvas;
+import org.vaadin.hezamu.canvas.Canvas.CanvasMouseDownListener;
+import org.vaadin.hezamu.canvas.Canvas.CanvasMouseMoveListener;
+*/
+import ka2.pr.*;
 
 /**
  *
@@ -38,7 +51,7 @@ import elemental.html.Console;
 @Theme("mytheme")
 @Widgetset("ka2.pr.MyAppWidgetset")
 public class MyUI extends UI {
-
+	Cantr cantr=new Cantr();
 	Navigator navigator;
 	protected static final String MAINVIEW = "main";
 	
@@ -73,21 +86,18 @@ public class MyUI extends UI {
     	boolean register = false;
     	
 		setSizeFull();
-		//FieldGroup fgForm = new FieldGroup();
 		FieldGroup fgAccount = new BeanFieldGroup<Account>(Account.class);
 		fgAccount.setItemDataSource(new BeanItem<Account>(new Account("Login","Password","email")));
-		//final Form form = new Form();
-		
-		final TextField tfLogin = new TextField("Login:");
-		final PasswordField pfPass = new PasswordField("Hasło:");
-		final PasswordField pfRPass = new PasswordField("Potwierdź hasło:");
-		
-		
-		pfPass.setRequired(true);
-		tfLogin.setRequired(true);
-		
-		AccountFormL afl = new AccountFormL();
+		final AccountFormL afl = new AccountFormL(); 
 		fgAccount.bindMemberFields(afl);
+		
+		
+	
+		
+		
+		//addComponent(sMode);
+		//AccountFormL afl = new AccountFormL();
+		
 		
 		Label lblLogin = new Label("Login");
 		for (Object propertyId : fgAccount.getUnboundPropertyIds()){
@@ -95,52 +105,16 @@ public class MyUI extends UI {
 			addComponent(fgAccount.buildAndBind(propertyId));
 		}
 		
-		//fgForm.a
-		//form.addField("login", tfLogin);
-		//form.addField("password", pfPass);
-		
 		addComponent(afl);
 		
-		final Button btnStart = new Button("Zaloguj", new ClickListener() {
+		addComponent(new Button("test", new ClickListener() {
 			
 			@Override
 			public void buttonClick(ClickEvent event) {
 				navigator.navigateTo(MAINVIEW);
 				
 			}
-		});
-		
-		final Button btnRegister = new Button("Zarejestruj", new ClickListener() {
-			
-			@Override
-			public void buttonClick(ClickEvent event) {
-				addComponent(pfRPass);
-				pfRPass.setRequired(true);
-				pfRPass.addValidator(new Validator() {
-					
-					@Override
-					public void validate(Object value) throws InvalidValueException {
-						if(pfRPass.getValue() != pfPass.getValue()){
-							throw new InvalidValueException("Hasła się nie pokrywają");
-						}
-						
-					}
-				});
-			}
-		});
-		
-		
-		
-		/*
-		addComponent(tfLogin);
-		addComponent(pfPass);		
-
-		addComponent(lblLogin);
-		addComponent(btnStart);
-		*/
-		addComponent(btnRegister);
-		
-		
+		}));
 		
 	}	
     	
@@ -156,10 +130,14 @@ public class MyUI extends UI {
     }
     
     public class MainView extends VerticalLayout implements View{
+    boolean vird = false;
+    CanvasPlus can = new CanvasPlus();
+   
+    
         public MainView() {
     		setSizeFull();
     		
-    		Button btnStart = new Button("Powrót", new ClickListener() {
+    		Button btnBack = new Button("Powrót", new ClickListener() {
     			
     			@Override
     			public void buttonClick(ClickEvent event) {
@@ -167,15 +145,146 @@ public class MyUI extends UI {
     				
     			}
     		});
-    		addComponent(btnStart);
+    		addComponent(btnBack);
+    		cantr.setG(3, 5, 80);
+    		cantr.setB(8, 4, 120);
+    		System.out.println(cantr.getG(3, 5)+"%%"+cantr.getB(8, 4));
+    		addComponent(can);
+    		  
+
+   can.setWidth("200px");
+   can.setHeight("200px");
+   can.setFillStyle("000000");
+   can.fillRect(0.0, 0.0,200.0,200.0);
+   dfC(cantr, can);
+   //can.setStrokeStyle(15,25,200);
+   /*
+   can.setFillStyle("55faa1");
+   can.fillRect(50.0, 50.0,100.0,100.0);
+   final Random rnd = new Random();
+   double ex=rnd.nextDouble()*200;
+   can.setFillStyle("40a10F");
+   can.fillRect(ex, 170.0,10.0,50.0);
+   //can.set
+    */
+    
+   can.setStyleName("dravca");
+   
+   
+   can.setLineWidth(1.0);
+   
+    	can.addMouseMoveListener(new CanvasMouseMoveListener() {			
+			@Override
+			public void onMove(MouseEventDetails mouseDetails) {
+						double qx=(double)mouseDetails.getRelativeX();
+						double qy=(double)mouseDetails.getRelativeY();
+			if(vird){			
+			
+			can.lineTo(qx, qy);
+			can.stroke();
+			
+			
+			can.stroke();}
+							
+			}
+		} );
+    can.addClickDownListener(new CanvasClickDownListener() {		
+		@Override
+		public void onClickDown(MouseEventDetails mouseDetails) {
+			double qx=(double)mouseDetails.getRelativeX();
+			double qy=(double)mouseDetails.getRelativeY();
+			vird=true;
+			can.beginPath();
+			can.setStrokeStyle(255, 75, 12);
+		
+			System.out.println("x:"+qx+" y:"+qy);
+			oznacz(can, cantr, qx, qy);
+			
+		}
+	});		
+    can.addClickUpListener(new CanvasClickUpListener() {
+		
+		@Override
+		public void onClickUp(MouseEventDetails mouseDetails) {
+			vird=false;
+			can.closePath();
+			
+			
+		}
+	});
     		
-    	}	
+ 
+    	
+ }	
+        
+  void dfC(Cantr c, CanvasPlus can){
+	 int h=c.maxy ;
+	 int w=c.maxx;
+	 String r,g,b;
+	 String rgb="";
+	 double canh=can.getHeight();
+	 double canw=can.getWidth();
+	 
+	 double qh = canh/h;
+	 double qw = canw/w;
+	 can.setStrokeStyle("555555");
+	 for(int i=0;i<h;i+=1){
+		for(int j=0;j<w;j+=1){		 
+			 //can.setStrokeStyle(c.getR(i, j), c.getG(i, j), c.getB(i, j));
+			
+		  r = Integer.toHexString(c.getR(i, j));		
+		  if (r.length() < 2) {			  
+			   r="0"+r.toString();
+			}
+		  g = Integer.toHexString(c.getG(i, j));
+		 
+		  if (g.length() < 2) {
+			  
+			   g="0"+g.toString();
+			}
+		  b = Integer.toHexString(c.getB(i, j));
+		
+		  if (b.length() < 2) {
+			 
+			   b="0"+r.toString();
+			}
+		 
+		  rgb=r+g+b;
+		  can.setFillStyle(rgb.substring(0,rgb.length()));
+		  System.out.println(rgb);
+		 if((j+i)%3==2) can.setFillStyle("01f0f0");
+		  can.fillRect(qh*i, qw*j, qh, qw);
+		  can.strokeRect(qh*i, qw*j, qh, qw);
+		  
+		 // System.out.println(rgb);
+		}
+	 }
+	 //System.out.println("all");
+	// c.drr();
+  }
+  void oznacz(CanvasPlus can,Cantr c,double x,double y){
+	  int h=c.maxy ;
+	  int w=c.maxx;
+	  String r,g,b;
+	  String rgb;
+	  double canh=can.getHeight();
+	  double canw=can.getWidth();
+		 
+	  double qh = canh/h;
+	  double qw = canw/w;
+	  
+	  c.setB((int)(x/qw),(int)(y/qh), 30);
+	  System.out.println((int)(x/qw)+"|"+(int)(y/qh));
+	  dfC(c,can);
+	  
+  }
+        	
         	
         	
     	@Override
     	public void enter(ViewChangeEvent event) {
     		// TODO Auto-generated method stub
-    		
+    		    		
     	}
         	
         	

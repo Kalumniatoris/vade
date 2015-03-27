@@ -14,7 +14,7 @@ import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.Slider;
 import com.vaadin.ui.TextField;
 
-public class AccountFormL extends GridLayout {
+public class AccountFormL2 extends GridLayout {
 	public boolean rejestracja = false;
 	@PropertyId("login")
 	private TextField login = new TextField("Login:");
@@ -32,7 +32,7 @@ public class AccountFormL extends GridLayout {
 	private Button zaloguj = new Button("Zaloguj");
 	private Label lIAR = new Label("Logowanie/Rejestracja");
 	
-	public AccountFormL() {
+	public AccountFormL2() {
 	super(2,5);
 		
 		
@@ -40,7 +40,6 @@ public class AccountFormL extends GridLayout {
 	setSpacing(true);
 	addComponent(login,0,0);
 	addComponent(password,0,1);
-	addComponent(zaloguj,0,4);
 	
 	Slider sMode = new Slider();  //0 - logowanie, 1  -rejestracja
 	sMode.setImmediate(false);
