@@ -17,6 +17,7 @@ public class Broadcaster {
 	public static void broadcast(final String message){
 		System.out.println("Broadcating to:");
 		for (BroadcastListener listener:listeners){
+			//if(l)
 			System.out.println(listener.toString());
 			listener.receiveBroadcast(message);
 		}
@@ -26,6 +27,7 @@ public class Broadcaster {
 	public interface BroadcastListener {
 		public void receiveBroadcast(String message);
 		public void receiveCantr(Cantr can);
+		public void recChanges(int x, int y, String newCol);	
 	}
 	
 
