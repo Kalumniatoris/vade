@@ -1,5 +1,7 @@
 package ka2.pr;
 
+import org.apache.tools.ant.types.CommandlineJava.SysProperties;
+
 import com.alsnightsoft.vaadin.widgets.canvasplus.CanvasPlus;
 import com.vaadin.shared.ui.colorpicker.Color;
 
@@ -23,13 +25,11 @@ public class Candraw {
 				if (r.length() < 2) {
 					r = "0" + r.toString();
 				}
-
 				g = Integer.toHexString(c.getG(i, j));
 
 				if (g.length() < 2) {
 					g = "0" + g.toString();
 				}
-
 				b = Integer.toHexString(c.getB(i, j));
 				if (b.length() < 2) {
 					b = "0" + b.toString();
@@ -42,6 +42,25 @@ public class Candraw {
 
 			}
 		}
+	}
+
+	static void drawIndividual(CanvasPlus can, Cantr c, double x, double y,	String kolor) {
+		double canh = can.getHeight();
+		double canw = can.getWidth();
+		int h = c.maxy;
+		int w = c.maxx;
+		double qh = canh / h;
+		double qw = canw / w;
+				
+		
+		int xx,yy;
+		xx=(int) (qh*x);
+		yy=(int) (qw*y);
+		
+		can.setFillStyle(kolor);
+		can.fillRect(qh * xx, qw * yy, qh, qw);
+		System.out.println("Draw:"+xx+" "+yy);
+		
 	}
 
 	static void oznacz(CanvasPlus can, Cantr c, double x, double y, Color kolor) {
@@ -63,8 +82,9 @@ public class Candraw {
 		c.setB(xa, ya, kolor.getBlue());
 
 		System.out.println((int) (x / qw) + "|" + (int) (y / qh));
-		Candraw.dfC(c, can);
-		Broadcaster.sendCantr(c);
+		//Candraw.dfC(c, can);
+		//Broadcaster.sendCantr(c);
+		Broadcaster.sendChanges(xa, ya,kolor.getCSS().substring(1,7));
 
 	}
 }

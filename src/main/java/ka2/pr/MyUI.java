@@ -174,9 +174,9 @@ public class MyUI extends UI {
 
 				}
 			});
-			cantr.setG(3, 5, 255);
-			cantr.setB(8, 4, 120);
-			System.out.println(cantr.getG(3, 5) + "%%" + cantr.getB(8, 4));
+			//cantr.setG(3, 5, 255);
+			//cantr.setB(8, 4, 120);
+			//System.out.println(cantr.getG(3, 5) + "%%" + cantr.getB(8, 4));
 
 			vl1.addComponent(can);
 
@@ -200,7 +200,7 @@ public class MyUI extends UI {
 
 					System.out.println("x:" + qx + " y:" + qy);
 					Candraw.oznacz(can, cantr, qx, qy, kolor);
-
+					//Broadcaster.sendChanges(qx, qy, kolor);
 					Broadcaster.broadcast(can.toString());
 
 				}
@@ -210,8 +210,7 @@ public class MyUI extends UI {
 				@Override
 				public void onClickUp(MouseEventDetails mouseDetails) {
 					klikniete = false;
-					can.closePath();
-
+					//can.closePath();
 				}
 			});
 
@@ -221,9 +220,7 @@ public class MyUI extends UI {
 
 		@Override
 		public void enter(ViewChangeEvent event) {
-			// TODO Auto-generated method stub
 			Broadcaster.register(this);
-
 		}
 
 		@Override
@@ -243,14 +240,15 @@ public class MyUI extends UI {
 
 		@Override
 		public void receiveCantr(Cantr can) {
-			// TODO Auto-generated method stub
 			cantr = can;
 			Candraw.dfC(cantr, this.can);
 		}
 
 		@Override
 		public void recChanges(int x, int y, String newCol) {
-			// TODO Auto-generated method stub
+						
+			//Candraw.updadeCantr(x,y,newCol);
+		    Candraw.drawIndividual(can, cantr, x, y, newCol);
 
 		}
 

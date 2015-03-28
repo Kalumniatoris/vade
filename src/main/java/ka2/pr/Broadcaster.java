@@ -40,6 +40,12 @@ public class Broadcaster {
 		
 	}
 	
+	public static void sendChanges(int x, int y, String newCol){
+		for (BroadcastListener listener:listeners){
+			listener.recChanges(x, y, newCol);
+		}		
+	}
+	
 	
 	
 	
