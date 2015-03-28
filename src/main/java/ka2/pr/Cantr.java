@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 
 public class Cantr implements Serializable{
-	public final int maxx=10;
-	public final int maxy=10;
+	public final int maxx=20;
+	public final int maxy=20;
 	private int[][] r = new int[maxx][maxy];
 	private int[][] g = new int[maxx][maxy];
 	private int[][] b = new int[maxx][maxy];
