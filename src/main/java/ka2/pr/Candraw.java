@@ -83,8 +83,8 @@ public class Candraw {
 
 		System.out.println( xa + "|" + ya);
 		//Candraw.dfC(c, can);
-		//Broadcaster.sendCantr(c);
-		Broadcaster.sendChanges(xa, ya,kolor.getCSS().substring(1,7));
+		Broadcaster.sendCantr(c);
+		//Broadcaster.sendChanges(xa, ya,kolor.getCSS().substring(1,7));
 
 	}
 }
