@@ -174,10 +174,7 @@ public class MyUI extends UI {
 
 				}
 			});
-			//cantr.setG(3, 5, 255);
-			//cantr.setB(8, 4, 120);
-			//System.out.println(cantr.getG(3, 5) + "%%" + cantr.getB(8, 4));
-
+			
 			vl1.addComponent(can);
 
 			can.setWidth("400px");

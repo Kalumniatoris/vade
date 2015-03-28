@@ -81,7 +81,7 @@ public class Candraw {
 		c.setG(xa, ya, kolor.getGreen());
 		c.setB(xa, ya, kolor.getBlue());
 
-		System.out.println((int) (x / qw) + "|" + (int) (y / qh));
+		System.out.println( xa + "|" + ya);
 		//Candraw.dfC(c, can);
 		//Broadcaster.sendCantr(c);
 		Broadcaster.sendChanges(xa, ya,kolor.getCSS().substring(1,7));
