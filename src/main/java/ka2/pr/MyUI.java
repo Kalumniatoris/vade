@@ -2,6 +2,8 @@ package ka2.pr;
 
 import javax.servlet.annotation.WebServlet;
 
+import org.atmosphere.cpr.BroadcasterListener;
+
 import ka2.pr.Broadcaster.BroadcastListener;
 
 import com.alsnightsoft.vaadin.widgets.canvasplus.CanvasPlus;
@@ -39,12 +41,16 @@ import com.vaadin.ui.components.colorpicker.ColorChangeListener;
  */
 @Theme("mytheme")
 @Widgetset("ka2.pr.MyAppWidgetset")
-public class MyUI extends UI {
+@Push
+public class MyUI extends UI implements BroadcastListener {
 	static Cantr cantr = new Cantr();
+	CanvasPlus can = new CanvasPlus();
+	
+	
 
+	
 	Navigator navigator;
 	protected static final String MAINVIEW = "main";
-
 	@Override
 	protected void init(VaadinRequest vaadinRequest) {
 		getPage().setTitle("Avedacosta");
@@ -58,13 +64,14 @@ public class MyUI extends UI {
 		navigator.addView(MAINVIEW, new MainView());
 
 		new InitializerThread().start();
+		Broadcaster.register(this);
 
 	}
 
 	@Override
 	public void detach() {
-		// TODO how to do on exit of view
-		// Broadcaster.unregister(this);
+		
+		Broadcaster.unregister(this);
 		super.detach();
 	}
 
@@ -136,13 +143,13 @@ public class MyUI extends UI {
 
 	}
 
-	@Push
-	public class MainView extends VerticalLayout implements View,
-			BroadcastListener {
+	
+	
+	public class MainView extends VerticalLayout implements View
+	{//TODO wydobyć broadcast poziom wyżej, 
 		// Par
 		Color kolor = new Color(00255255);
 		boolean klikniete = false;
-		CanvasPlus can = new CanvasPlus();
 		ColorPicker colpick = new ColorPicker("Kolor", Color.CYAN);
 
 		//
@@ -166,7 +173,6 @@ public class MyUI extends UI {
 			vl2.addComponent(colpick);
 
 			colpick.addColorChangeListener(new ColorChangeListener() {
-
 				@Override
 				public void colorChanged(ColorChangeEvent event) {
 					kolor = event.getColor();
@@ -197,7 +203,6 @@ public class MyUI extends UI {
 
 					System.out.println("x:" + qx + " y:" + qy);
 					Candraw.oznacz(can, cantr, qx, qy, kolor);
-					//Broadcaster.sendChanges(qx, qy, kolor);
 					Broadcaster.broadcast(can.toString());
 
 				}
@@ -207,7 +212,7 @@ public class MyUI extends UI {
 				@Override
 				public void onClickUp(MouseEventDetails mouseDetails) {
 					klikniete = false;
-					//can.closePath();
+					
 				}
 			});
 
@@ -217,37 +222,39 @@ public class MyUI extends UI {
 
 		@Override
 		public void enter(ViewChangeEvent event) {
-			Broadcaster.register(this);
+		//	Broadcaster.register(this);
 		}
 
-		@Override
-		public void receiveBroadcast(final String message) {
-			access(new Runnable() {
-				@Override
-				public void run() {
-					System.out.println("TEST");
-					Notification n = new Notification("M:", message,
-							Type.TRAY_NOTIFICATION);
-					n.show(getPage());
+		
 
-				}
-			});
+	}
 
-		}
 
-		@Override
-		public void receiveCantr(Cantr can) {
-			cantr = can;
-			Candraw.dfC(cantr, this.can);
-		}
+	@Override
+	public void receiveBroadcast(final String message) {
+		access(new Runnable() {
+			@Override
+			public void run() {
+				System.out.println("TEST");
+				Notification n = new Notification("M:", message,
+						Type.TRAY_NOTIFICATION);
+				n.show(getPage());
 
-		@Override
-		public void recChanges(int x, int y, String newCol) {
-						
-			//Candraw.updadeCantr(x,y,newCol);
-		    Candraw.drawIndividual(can, cantr, x, y, newCol);
+			}
+		});
 
-		}
+	}
+
+	@Override
+	public void receiveCantr(Cantr can) {
+		cantr = can;
+		Candraw.dfC(cantr, this.can);
+	}
+
+	@Override
+	public void recChanges(int x, int y, String newCol) {
+					
+	    Candraw.drawIndividual(can, cantr, x, y, newCol);
 
 	}
 
