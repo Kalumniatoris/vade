@@ -2,8 +2,6 @@ package ka2.pr;
 
 import javax.servlet.annotation.WebServlet;
 
-import org.atmosphere.cpr.BroadcasterListener;
-
 import ka2.pr.Broadcaster.BroadcastListener;
 
 import com.alsnightsoft.vaadin.widgets.canvasplus.CanvasPlus;
@@ -29,8 +27,6 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ColorPicker;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.components.colorpicker.ColorChangeEvent;
@@ -43,17 +39,30 @@ import com.vaadin.ui.components.colorpicker.ColorChangeListener;
 @Widgetset("ka2.pr.MyAppWidgetset")
 @Push
 public class MyUI extends UI implements BroadcastListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2112102342095057720L;
+	/**
+	 * 
+	 */
+	
+	
 	static Cantr cantr = new Cantr();
 	CanvasPlus can = new CanvasPlus();
-	Color kolor = new Color(00,255,255); //TODO podpiąć pod użytkownika
-	int punkty =0;
-	Label lblPunkty=new Label();
+	Color kolor = new Color(00, 255, 255); // TODO podpiąć pod użytkownika
+		int punkty = 0;
+	Label lblPunkty = new Label();
 
-	
 	Navigator navigator;
 	protected static final String MAINVIEW = "main";
+
 	@Override
 	protected void init(VaadinRequest vaadinRequest) {
+		if(getSession().getAttribute("User")!=null)
+		kolor=(Color) getSession().getAttribute("Kolor");
+	
+		
 		getPage().setTitle("Avedacosta");
 
 		VerticalLayout mLayout = new VerticalLayout();
@@ -71,7 +80,7 @@ public class MyUI extends UI implements BroadcastListener {
 
 	@Override
 	public void detach() {
-		
+
 		Broadcaster.unregister(this);
 		super.detach();
 	}
@@ -84,7 +93,6 @@ public class MyUI extends UI implements BroadcastListener {
 			} catch (InterruptedException e) {
 			}
 			access(new Runnable() {
-
 				@Override
 				public void run() {
 					System.out.println("loaded");
@@ -95,37 +103,58 @@ public class MyUI extends UI implements BroadcastListener {
 		}
 	}
 
+	
 	@WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
 	@VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
 	public static class MyUIServlet extends VaadinServlet {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -6257181833290857564L;
 
 	}
 
 	// ////Views
 
 	public class StartView extends VerticalLayout implements View {
-		public StartView() {
-			boolean register = false;
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -28582932550420135L;
 
+		public StartView() {
+			//boolean register = false;
+			//ColorPicker cPic = new ColorPicker();
 			setSizeFull();
 			FieldGroup fgAccount = new BeanFieldGroup<Account>(Account.class);
 			fgAccount.setItemDataSource(new BeanItem<Account>(new Account(
 					"Login", "Password", "email")));
+
+			
 			final AccountFormL afl = new AccountFormL();
 			fgAccount.bindMemberFields(afl);
+			
 
 			// addComponent(sMode);
 			// AccountFormL afl = new AccountFormL();
 
-			Label lblLogin = new Label("Login");
+			//Label lblLogin = new Label("Login");
 			for (Object propertyId : fgAccount.getUnboundPropertyIds()) {
-				System.out.println(propertyId);
+				
+				System.out.println(propertyId.toString());
+				
 				addComponent(fgAccount.buildAndBind(propertyId));
 			}
 
 			addComponent(afl);
 
 			addComponent(new Button("test", new ClickListener() {
+
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 8586976835683579984L;
 
 				@Override
 				public void buttonClick(ClickEvent event) {
@@ -144,14 +173,13 @@ public class MyUI extends UI implements BroadcastListener {
 
 	}
 
-	
-	
-	public class MainView extends VerticalLayout implements View
-	{//TODO wydobyć broadcast poziom wyżej, 
-		// Par
-		
+	public class MainView extends VerticalLayout implements View {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -898130971944305672L;
 		boolean klikniete = false;
-		ColorPicker colpick = new ColorPicker("Kolor", Color.CYAN);
+		ColorPicker colpick = new ColorPicker("Kolor");
 
 		//
 
@@ -164,6 +192,11 @@ public class MyUI extends UI implements BroadcastListener {
 
 			setSizeFull();
 			Button btnBack = new Button("Powrót", new ClickListener() {
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = -5099477293776468281L;
+
 				@Override
 				public void buttonClick(ClickEvent event) {
 					navigator.navigateTo("");
@@ -172,17 +205,23 @@ public class MyUI extends UI implements BroadcastListener {
 			});
 			vl1.addComponent(btnBack);
 			vl2.addComponent(colpick);
-			
+
 			vl2.addComponent(lblPunkty);
 			colpick.addColorChangeListener(new ColorChangeListener() {
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 587900936681258674L;
+
 				@Override
 				public void colorChanged(ColorChangeEvent event) {
 					kolor = event.getColor();
+					getSession().getAttribute("kolor");
 					// TODO KOLOR
 
 				}
 			});
-			
+
 			vl1.addComponent(can);
 
 			can.setWidth("400px");
@@ -214,7 +253,7 @@ public class MyUI extends UI implements BroadcastListener {
 				@Override
 				public void onClickUp(MouseEventDetails mouseDetails) {
 					klikniete = false;
-					
+
 				}
 			});
 
@@ -224,24 +263,22 @@ public class MyUI extends UI implements BroadcastListener {
 
 		@Override
 		public void enter(ViewChangeEvent event) {
-		//	Broadcaster.register(this);
+			// Broadcaster.register(this);
 		}
 
-		
-
 	}
-
 
 	@Override
 	public void receiveBroadcast(final String message) {
 		access(new Runnable() {
 			@Override
 			public void run() {
+				/*
 				System.out.println("TEST");
 				Notification n = new Notification("M:", message,
 						Type.TRAY_NOTIFICATION);
 				n.show(getPage());
-
+				 */
 			}
 		});
 
@@ -255,16 +292,17 @@ public class MyUI extends UI implements BroadcastListener {
 
 	@Override
 	public void recChanges(int x, int y, String newCol) {
-					
-	    Candraw.drawIndividual(can, cantr, x, y, newCol);
-	    System.out.println("kolor: "+kolor.getCSS().substring(1)+" UpdtKol: "+newCol);
-	    if (newCol.compareTo(kolor.getCSS().substring(1))!=0){
-	    int akt = cantr.ileK(kolor);
-	    punkty+=akt;
-	    lblPunkty.setValue("Aktualne: "+akt+"\n"+"Razem: "+punkty);
-	    }
-	    
-	    //System.out.println(cantr.ileK(kolor));
+
+		Candraw.drawIndividual(can, cantr, x, y, newCol);
+		System.out.println("kolor: " + kolor.getCSS().substring(1)
+				+ " UpdtKol: " + newCol);
+		if (newCol.compareTo(kolor.getCSS().substring(1)) != 0) {
+			int akt = cantr.ileK(kolor);
+			punkty += akt;
+			lblPunkty.setValue(getSession().getAttribute("User")+"\n"+"Aktualne: " + akt + "\n" + "Razem: " + punkty);
+		}
+
+		// System.out.println(cantr.ileK(kolor));
 
 	}
 

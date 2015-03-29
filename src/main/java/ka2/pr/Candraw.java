@@ -1,7 +1,5 @@
 package ka2.pr;
 
-import org.apache.tools.ant.types.CommandlineJava.SysProperties;
-
 import com.alsnightsoft.vaadin.widgets.canvasplus.CanvasPlus;
 import com.vaadin.shared.ui.colorpicker.Color;
 
@@ -68,8 +66,8 @@ public class Candraw {
 	static void oznacz(CanvasPlus canvas, Cantr cantr, double x, double y, Color kolor) {
 		int cantrHeight = cantr.maxy;
 		int cantrWidth = cantr.maxx;
-		String r, g, b;
-		String rgb;
+		//String r, g, b;
+		//String rgb;
 		double canvasHeight = canvas.getHeight();
 		double canvasWidth = canvas.getWidth();
 
@@ -89,4 +87,5 @@ public class Candraw {
 		Broadcaster.sendChanges(xa, ya,kolor.getCSS().substring(1,7));
 
 	}
+	
 }
