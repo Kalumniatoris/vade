@@ -45,8 +45,9 @@ import com.vaadin.ui.components.colorpicker.ColorChangeListener;
 public class MyUI extends UI implements BroadcastListener {
 	static Cantr cantr = new Cantr();
 	CanvasPlus can = new CanvasPlus();
-	
-	
+	Color kolor = new Color(00,255,255); //TODO podpiąć pod użytkownika
+	int punkty =0;
+	Label lblPunkty=new Label();
 
 	
 	Navigator navigator;
@@ -148,7 +149,7 @@ public class MyUI extends UI implements BroadcastListener {
 	public class MainView extends VerticalLayout implements View
 	{//TODO wydobyć broadcast poziom wyżej, 
 		// Par
-		Color kolor = new Color(00255255);
+		
 		boolean klikniete = false;
 		ColorPicker colpick = new ColorPicker("Kolor", Color.CYAN);
 
@@ -171,7 +172,8 @@ public class MyUI extends UI implements BroadcastListener {
 			});
 			vl1.addComponent(btnBack);
 			vl2.addComponent(colpick);
-
+			
+			vl2.addComponent(lblPunkty);
 			colpick.addColorChangeListener(new ColorChangeListener() {
 				@Override
 				public void colorChanged(ColorChangeEvent event) {
@@ -255,6 +257,14 @@ public class MyUI extends UI implements BroadcastListener {
 	public void recChanges(int x, int y, String newCol) {
 					
 	    Candraw.drawIndividual(can, cantr, x, y, newCol);
+	    System.out.println("kolor: "+kolor.getCSS().substring(1)+" UpdtKol: "+newCol);
+	    if (newCol.compareTo(kolor.getCSS().substring(1))!=0){
+	    int akt = cantr.ileK(kolor);
+	    punkty+=akt;
+	    lblPunkty.setValue("Aktualne: "+akt+"\n"+"Razem: "+punkty);
+	    }
+	    
+	    //System.out.println(cantr.ileK(kolor));
 
 	}
 
