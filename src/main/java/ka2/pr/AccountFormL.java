@@ -209,13 +209,15 @@ Map<String, String> users;
 	
 	
 	private boolean validPassword(){
+		if(!rejestracja)return true;
 		if(password.getValue().equals(rpass.getValue()))
 		{lbPassWarn.setValue("");	
 		return true;}
-		else{ 
+		else{ 			
 			lbPassWarn.setValue("Niezgodne hasla");			
 			return false;
-			}
+		}
+		
 		
 	}
 	
